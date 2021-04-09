@@ -12,7 +12,7 @@ class analitica():
     ventana = 10
     pronostico = 3
     file_name = "data_base.csv"
-    servidor = "20.84.105.98"
+    servidor =  3.95.77.42 
 
     def on_connect(client, userdata, flags, rc):
         print("Connected with result code "+str(rc))
