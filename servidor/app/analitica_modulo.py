@@ -84,26 +84,29 @@ class analitica():
         self.publicar("median-{}".format(sensor), str(df_filtrado.median(skipna = True)))
         self.publicar("std-{}".format(sensor), str(df_filtrado.std(skipna = True)))
 
-        if ("max-{}".format(sensor)=="max-humedad".format(sensor)) and str(df_filtrado.max(skipna = True))>"70":
-            publish.single('2/alertahum', "Precaucion Humedad elevada", hostname='20.84.105.98', client_id='pub_alerta')
-            #self.publicar("alerta-humedad".format(sensor), "Precaucion Humedad Elevada ")
+        if (("max-{}".format(sensor)=="max-EjeX".format(sensor)) and str(df_filtrado.max(skipna = True))>"70") or (("max-{}".format(sensor)=="max-EjeY".format(sensor)) and str(df_filtrado.max(skipna = True))>"70") or (("max-{}".format(sensor)=="max-EjeZ".format(sensor)) and str(df_filtrado.max(skipna = True))>"70"):
+            
+            self.publicar("alert-derrumbe".format(sensor), "Precaucion cambio abrupto")
+            publish.single('2/alert-derrumbe', "Precaucion cambio abrupto", hostname='3.95.77.42', client_id='alert')
+            
+        if (("min-{}".format(sensor)=="min-EjeX".format(sensor)) and str(df_filtrado.min(skipna = True))<"70") or (("min-{}".format(sensor)=="min-EjeY".format(sensor)) and str(df_filtrado.min(skipna = True))<"70") or (("min-{}".format(sensor)=="min-EjeZ".format(sensor)) and str(df_filtrado.min(skipna = True))<"70"):
 
-        if ("min-{}".format(sensor)=="min-humedad".format(sensor)) and str(df_filtrado.min(skipna = True))<"60":
-            publish.single('2/alertahum', "Precaucion Humedad baja", hostname='20.84.105.98', client_id='pub_alerta')
-            #self.publicar("alerta-humedad".format(sensor), "Precaucion Humedad Muy Baja")
+            self.publicar("alert-derrumbe".format(sensor), "Precaucion cambio abrupto")
+            publish.single('2/alert-derrumbe', "Precaucion cambio abrupto", hostname='3.95.77.42', client_id='alert')
 
-        if ("max-{}".format(sensor)=="max-temperatura".format(sensor)) and str(df_filtrado.max(skipna = True))>"30":
-            publish.single('2/alertatemp', "Precaucion temperatura elevada", hostname='20.84.105.98', client_id='pub_alerta')
-            #self.publicar("alerta-temperatura".format(sensor), "Precaucion temperatura Elevada ")
+        if ("max-{}".format(sensor)=="max-humd_data".format(sensor)) and str(df_filtrado.max(skipna = True))>"70":
+            publish.single('2/alertahumd_data', "Humedad elevada", hostname='3.95.77.42', client_id='alert')
+            #self.publicar("alerta-humedad".format(sensor), "Humedad Elevada ")
 
-        if ("min-{}".format(sensor)=="min-temperatura".format(sensor)) and str(df_filtrado.min(skipna = True))<"23":
-            publish.single('2/alertatemp', "Precaucion temperatura baja", hostname='20.84.105.98', client_id='pub_alerta')
-            #self.publicar("alerta-temperatura".format(sensor), "Precaucion temperatura Muy Baja")
+        if ("min-{}".format(sensor)=="min-humd_data".format(sensor)) and str(df_filtrado.min(skipna = True))<"60":
+            publish.single('2/alertahumd_data', "Humedad baja", hostname='3.95.77.42', client_id='alert')
+            #self.publicar("alerta-humd_data".format(sensor), "Humedad Muy Baja")
 
 
     def analitica_predictiva(self):
-        self.regresion("temperatura")
-        self.regresion("humedad")
+        self.regresion("temp_data")
+        self.regresion("pres_data")
+        self.regresion("humd_data")
 
 
     def regresion(self, sensor):
